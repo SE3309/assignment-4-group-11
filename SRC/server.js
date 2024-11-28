@@ -99,6 +99,19 @@ app.get("/api/getPropertyByPrice/:maxPrice/:minPrice", (req, res) => {
         })
 })
 
+app.get("/api/searchPropertyByAddress/:searchString", (req, res) => {
+    const searchString = req.params.searchString;
+    db.query(`SELECT address, datePosted, monthlyRent, buildingFeatures 
+        FROM propertyforrent WHERE address LIKE '%${searchString}%'`, (err, result) => {
+            if (err){
+                console.log(err);
+                res.status(404).send("Error");
+            } else {
+                res.send(result);
+            }
+        })
+})
+
 
 
 

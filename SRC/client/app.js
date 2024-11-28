@@ -1,6 +1,7 @@
 document.getElementById("form").addEventListener("submit", createAccount);
 document.getElementById("searchEmail").addEventListener("submit", searchEmail);
 document.getElementById("searchPrice").addEventListener("submit", searchPrice);
+document.getElementById("searchRent").addEventListener("submit", searchRent);
 
 async function createAccount(e) {
     e.preventDefault();
@@ -76,6 +77,23 @@ async function searchPrice(e) {
         const x = document.createElement("p");
         x.textContent = `Address: ${p.address}, Date Posted: ${p.datePosted}, Price: $${p.sellingPrice}, 
         Annual Property Tax: ${p.annualPropertyTax}, Features: ${p.buildingFeatures}`;
+        resultList.appendChild(x);
+    }
+}
+
+async function searchRent(e) {
+    e.preventDefault();
+    const searchString = document.getElementById("searchString").value;
+    const res = await fetch(`/api/searchPropertyByAddress/${searchString}`);
+    const props = await res.json();
+    const resultList = document.getElementById("f4Results");
+    while (resultList.firstChild){
+        resultList.removeChild(resultList.firstChild);
+    }
+    for (let p of props){
+        const x = document.createElement("p");
+        x.textContent = `Address: ${p.address}, Date Posted ${p.datePosted}, Monthly Rent: ${p.monthlyRent}, 
+        Features: ${p.buildingFeatures}`;
         resultList.appendChild(x);
     }
 }

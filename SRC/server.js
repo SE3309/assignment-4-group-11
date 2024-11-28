@@ -136,3 +136,16 @@ app.get("/api/getEmail/:email", (req, res) => {
         }
     })
 })
+
+app.delete("/api/deleteAppointment/:brokerEmail", (req, res) => {
+    const brokerEmail = req.params.brokerEmail;
+    db.query(`DELETE FROM appointment WHERE userId IN 
+        (SELECT userId FROM broker WHERE email = '${brokerEmail}')`, (err, result) => {
+            if (err){
+                console.log(err);
+                res.status(404).send("Error");
+            } else {
+                res.send(result);
+            }
+        })
+})

@@ -3,6 +3,7 @@ document.getElementById("searchEmail").addEventListener("submit", searchEmail);
 document.getElementById("searchPrice").addEventListener("submit", searchPrice);
 document.getElementById("searchRent").addEventListener("submit", searchRent);
 document.getElementById("updateEmail").addEventListener("submit", updateEmail);
+document.getElementById("deleteAppointment").addEventListener("submit", deleteAppointment);
 
 async function createAccount(e) {
     e.preventDefault();
@@ -126,4 +127,14 @@ async function updateEmail(e) {
         Username: ${p.username}, Address: ${p.address}, Phone Number: ${p.phoneNumber}`;
         resultList.appendChild(x);
     }
+}
+
+async function deleteAppointment(e) {
+    e.preventDefault();
+    const brokerEmail = document.getElementById("brokerEmail").value;
+    const res = await fetch(`/api/deleteAppointment/${brokerEmail}`, {
+        method: "DELETE",
+    });
+    const res2 = await res.json();
+    document.getElementById("f6Results").textContent = `Deleted Rows: ${res2.affectedRows}`
 }

@@ -84,6 +84,21 @@ app.get("/api/getPropertyByEmail/:email", (req, res) => {
         })
 })
 
+app.get("/api/getPropertyByPrice/:maxPrice/:minPrice", (req, res) => {
+    const maxPrice = req.params.maxPrice;
+    const minPrice = req.params.minPrice;
+    db.query(`SELECT address, datePosted, sellingPrice, annualPropertyTax, buildingFeatures 
+        FROM propertyForSale WHERE sellingPrice <= ${maxPrice} AND sellingPrice >= ${minPrice}
+        ORDER BY sellingPrice DESC`, (err, result) => {
+            if (err){
+                console.log(err);
+                res.status(404).send("Error");
+            } else {
+                res.send(result)
+            }
+        })
+})
+
 
 
 

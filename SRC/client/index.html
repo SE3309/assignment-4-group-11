@@ -38,10 +38,21 @@
     </form>
     <div id="f2Results">
     </div>
-    <h1>Order by Highest Price to Lowest Price under Given Price</h1>
+    <h1>Order by Highest Price to Lowest Price By Range</h1>
     <form id="searchPrice">
-        <label>Enter Price: </label>
-        <input placeholder="Enter price" required id="price"/>
+        <label>Max Price: </label>
+        <input placeholder="Enter max price" required id="maxPrice"/>
+        <br />
+        <label>Min Price: </label>
+        <input placeholder="Enter min price" required id="minPrice"/>
+        <button type="submit">Search</button>
+    </form>
+    <div id="f3Results">
+    </div>
+    <h1>Search Properties for Rent by Address</h1>
+    <form id="searchRent">
+        <label>Search: </label>
+        <input placeholder="Enter search string" required id="searchString"/>
         <button type="submit">Search</button>
     </form>
 </html>

@@ -1,5 +1,6 @@
 document.getElementById("form").addEventListener("submit", createAccount);
 document.getElementById("searchEmail").addEventListener("submit", searchEmail);
+document.getElementById("searchPrice").addEventListener("submit", searchPrice);
 
 async function createAccount(e) {
     e.preventDefault();
@@ -47,7 +48,34 @@ async function searchEmail(e) {
     }
     for (let p of props){
         const x = document.createElement("p");
-        x.textContent = `Name: ${p.nme}, Email: ${p.email}, Address: ${p.address}, Selling Price: ${p.sellingPrice}, Features: ${p.buildingFeatures}`;
+        x.textContent = `Name: ${p.nme}, Email: ${p.email}, Address: ${p.address}, 
+        Selling Price: $${p.sellingPrice}, Features: ${p.buildingFeatures}`;
+        resultList.appendChild(x);
+    }
+}
+
+async function searchPrice(e) {
+    e.preventDefault();
+    const maxPrice = document.getElementById("maxPrice").value;
+    const minPrice = document.getElementById("minPrice").value;
+    if (parseFloat(maxPrice) != maxPrice){
+        alert("Not a Number!");
+        return;
+    }
+    if (parseFloat(minPrice) != minPrice){
+        alert("Not a Number!");
+        return;
+    }
+    const res = await fetch(`/api/getPropertyByPrice/${maxPrice}/${minPrice}`);
+    const props = await res.json();
+    const resultList = document.getElementById("f3Results");
+    while (resultList.firstChild){
+        resultList.removeChild(resultList.firstChild);
+    }
+    for (let p of props){
+        const x = document.createElement("p");
+        x.textContent = `Address: ${p.address}, Date Posted: ${p.datePosted}, Price: $${p.sellingPrice}, 
+        Annual Property Tax: ${p.annualPropertyTax}, Features: ${p.buildingFeatures}`;
         resultList.appendChild(x);
     }
 }

@@ -2,6 +2,7 @@ document.getElementById("form").addEventListener("submit", createAccount);
 document.getElementById("searchEmail").addEventListener("submit", searchEmail);
 document.getElementById("searchPrice").addEventListener("submit", searchPrice);
 document.getElementById("searchRent").addEventListener("submit", searchRent);
+document.getElementById("updateEmail").addEventListener("submit", updateEmail);
 
 async function createAccount(e) {
     e.preventDefault();
@@ -94,6 +95,35 @@ async function searchRent(e) {
         const x = document.createElement("p");
         x.textContent = `Address: ${p.address}, Date Posted ${p.datePosted}, Monthly Rent: ${p.monthlyRent}, 
         Features: ${p.buildingFeatures}`;
+        resultList.appendChild(x);
+    }
+}
+
+async function updateEmail(e) {
+    e.preventDefault();
+    const currentEmail = document.getElementById("currentEmail").value;
+    const newEmail = document.getElementById("newEmail").value;
+    const res = await fetch(`/api/updateEmail/${currentEmail}`, {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+            newEmail: newEmail
+        })
+    })
+    const res2 = await res.json();
+    document.getElementById("rowsUpdated").textContent = `Rows Updated: ${res2.affectedRows}`;
+    const res3 = await fetch(`/api/getEmail/${newEmail}`);
+    const res4 = await res3.json();
+    const resultList = document.getElementById("f5Results");
+    while (resultList.firstChild){
+        resultList.removeChild(resultList.firstChild);
+    }
+    for (let p of res4){
+        const x = document.createElement("p");
+        x.textContent = `UserId: ${p.userId}, Email: ${p.email}, Name: ${p.nme}, 
+        Username: ${p.username}, Address: ${p.address}, Phone Number: ${p.phoneNumber}`;
         resultList.appendChild(x);
     }
 }

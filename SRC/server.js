@@ -9,9 +9,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 const db = mysql.createPool({
-    host: 'localhost',  // your database host
-    user: 'root',      // your database username
-    password: 'se3309',  // your database password
+    host: 'localhost',
+    user: 'root',
+    password: 'se3309',
     database: 'se3309_assignment3'
   });
 
@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, "client")));
 
 app.listen(3000, () => {    
     console.log('Server is running');
-  });
+});
 
 app.post('/api/createAccount', (req, res) => {
     const name = req.body.name;
@@ -54,7 +54,7 @@ app.post('/api/createAccount', (req, res) => {
             })
         }
     })
-})
+});
 
 app.get("/api/getClient/:email", (req, res) => {
     const email = req.params.email;
@@ -66,7 +66,7 @@ app.get("/api/getClient/:email", (req, res) => {
             res.send(result[0])
         }
     })
-})
+});
 
 // For this example use dlittle@example.org
 app.get("/api/getPropertyByEmail/:email", (req, res) => {
@@ -82,7 +82,7 @@ app.get("/api/getPropertyByEmail/:email", (req, res) => {
                 res.send(result)
             }
         })
-})
+});
 
 app.get("/api/getPropertyByPrice/:maxPrice/:minPrice", (req, res) => {
     const maxPrice = req.params.maxPrice;
@@ -97,7 +97,7 @@ app.get("/api/getPropertyByPrice/:maxPrice/:minPrice", (req, res) => {
                 res.send(result)
             }
         })
-})
+});
 
 app.get("/api/searchPropertyByAddress/:searchString", (req, res) => {
     const searchString = req.params.searchString;
@@ -110,8 +110,29 @@ app.get("/api/searchPropertyByAddress/:searchString", (req, res) => {
                 res.send(result);
             }
         })
+});
+
+app.put("/api/updateEmail/:currentEmail", (req, res) => {
+    const currentEmail = req.params.currentEmail;
+    const newEmail = req.body.newEmail;
+    db.query(`UPDATE clt SET email = "${newEmail}" WHERE email = "${currentEmail}"`, (err, result) => {
+        if (err){
+            console.log(err);
+            res.status(404).send("Error");
+        } else {
+            res.send(result);
+        }
+    })
+});
+
+app.get("/api/getEmail/:email", (req, res) => {
+    const email = req.params.email;
+    db.query(`SELECT * FROM clt WHERE email = '${email}'`, (err, result) => {
+        if (err){
+            console.log(err);
+            res.status(404).send("Error");
+        } else {
+            res.send(result);
+        }
+    })
 })
-
-
-
-

@@ -68,4 +68,22 @@ app.get("/api/getClient/:email", (req, res) => {
     })
 })
 
+// For this example use dlittle@example.org
+app.get("/api/getPropertyByEmail/:email", (req, res) => {
+    const email = req.params.email;
+    db.query(`SELECT nme, email, propertyforsale.address, sellingPrice, buildingFeatures FROM propertyForSale
+        INNER JOIN clt ON userId = creatorId
+        WHERE isAvailable = 1
+        AND email = '${email}'`, (err, result) => {
+            if (err){
+                console.log(err);
+                res.status(404).send("Error");
+            } else {
+                res.send(result)
+            }
+        })
+})
+
+
+
 

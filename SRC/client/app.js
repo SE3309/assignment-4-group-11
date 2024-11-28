@@ -1,4 +1,5 @@
 document.getElementById("form").addEventListener("submit", createAccount);
+document.getElementById("searchEmail").addEventListener("submit", searchEmail);
 
 async function createAccount(e) {
     e.preventDefault();
@@ -32,5 +33,21 @@ async function createAccount(e) {
     }
     else {
         alert("Error");
+    }
+}
+
+async function searchEmail(e) {
+    e.preventDefault();
+    const email = document.getElementById("creatorEmail").value;
+    const res = await fetch(`/api/getPropertyByEmail/${email}`);
+    const props = await res.json();
+    const resultList = document.getElementById("f2Results");
+    while (resultList.firstChild){
+        resultList.removeChild(resultList.firstChild);
+    }
+    for (let p of props){
+        const x = document.createElement("p");
+        x.textContent = `Name: ${p.nme}, Email: ${p.email}, Address: ${p.address}, Selling Price: ${p.sellingPrice}, Features: ${p.buildingFeatures}`;
+        resultList.appendChild(x);
     }
 }
